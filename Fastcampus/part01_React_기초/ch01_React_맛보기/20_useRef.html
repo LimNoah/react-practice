@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      const rootElement = document.getElementById("root");
+      const root = ReactDOM.createRoot(rootElement);
+      const App = () => {
+        const divRef = React.useRef();
+
+        React.useEffect(() => {
+          setTimeout(() => {
+            divRef.current.style.backgroundColor = "pink";
+          }, 1000);
+        }, []);
+
+        return (
+          <>
+            <div
+              ref={divRef}
+              style={{ height: 100, width: 300, backgroundColor: "brown" }}
+            />
+          </>
+        );
+      };
+
+      root.render(<App />);
+    </script>
+  </body>
+</html>
