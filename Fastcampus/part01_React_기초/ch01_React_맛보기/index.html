@@ -10,36 +10,13 @@
       const rootElement = document.getElementById("root");
       const root = ReactDOM.createRoot(rootElement);
       const App = () => {
-        // 공통으로 쓰는 변수들 useState로 선언
-        const [message, setMessage] = React.useState("");
-        const [phoneNumber, setPhoneNumber] = React.useState("");
+        
 
-        const handleSubmit = (event) => {
-          event.preventDefault();
-
-          alert(phoneNumber);
-        };
-
-        const handleChange = (event) => {
-          
-          if (event.target.value.startsWith(0)) {
-            setMessage("Phone Number is valid");
-          } else {
-            setMessage("Phone Number should starts with 0");
-          }
-          setPhoneNumber(event.target.value);
-
-        };
-
+        // input의 value를 state로 관리하고 있는 값을 넣어주어 controlled 한 상태로 만든다
         return (
           <>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="phone">Phone Number :</label>
-              <br />
-              <input id="phone" name="phone" onChange={handleChange} />
-              <p>{message}</p>
-              <br />
-              <button type="submit" disabled={message !== "Phone Number is valid" || event.target.value.length === 0}>Submit</button>
+            <form>
+              
             </form>
           </>
         );

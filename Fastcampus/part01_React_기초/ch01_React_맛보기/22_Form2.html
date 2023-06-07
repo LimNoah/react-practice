@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      const rootElement = document.getElementById("root");
+      const root = ReactDOM.createRoot(rootElement);
+      const App = () => {
+        // 공통으로 쓰는 변수들 useState로 선언
+        const [message, setMessage] = React.useState("");
+        const [phoneNumber, setPhoneNumber] = React.useState("");
+
+        // Submit Button이 눌렸을 때 실행되는 Event Method
+        const handleSubmit = (event) => {
+          // Submit 버튼이 눌리면 새로고침되는 기능을 막아주는 Method
+          event.preventDefault();
+
+          // useState에 저장되어 있는 phoneNumber를 alert 창에 넣어준다
+          alert(phoneNumber);
+        };
+
+        // input element에 입력되는 값이 바뀔때 마다 실행되는 Event Method
+        const handleChange = (event) => {
+          // 1. setPhoneNumber를 하기 전에 input 값을 가지고 먼저 조건문을 돌려야,
+          // setPhoneNumber를 하는 동안에 일어나는 잠깐의 delay로 인해 조건문에 들어가지 않는 버그를 막을 수 있다
+          // 2. setPhoneNumber를 조건문 안에 넣으면 0으로 시작하지 않을 때 입력값을 더 입력할 수 없게 만들 수 있다
+
+          // input 입력 값이 0으로 시작할 때
+          if (event.target.value.startsWith(0)) {
+            setMessage("Phone Number is valid");
+            // useState의 phoneNumber 값을 input의 입력 값으로 setting 해준다
+            setPhoneNumber(event.target.value);
+          } else if (event.target.value.length === 0) { // input의 value가 공백일 때 message와 phoneNumber를 공백으로 초기화 시켜준다
+            setPhoneNumber("");
+            setMessage("");
+          } else { // input 입력 값이 0으로 시작하지 않을 때
+            setMessage("Phone Number should starts with 0");
+          }
+        };
+
+        // input의 value를 state로 관리하고 있는 값을 넣어주어 controlled 한 상태로 만든다
+        return (
+          <>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="phone">Phone Number :</label>
+              <br />
+              <input id="phone" name="phone" onChange={handleChange} value={phoneNumber}/>
+              <p>{message}</p>
+              <br />
+              <button type="submit" disabled={message !== "Phone Number is valid" || event.target.value.length === 0}>Submit</button>
+            </form>
+          </>
+        );
+      };
+
+      root.render(<App />);
+    </script>
+  </body>
+</html>
