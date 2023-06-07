@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      const rootElement = document.getElementById("root");
+      const root = ReactDOM.createRoot(rootElement);
+
+      // ErrorBoundary는 child를 감싸놓고 ErrorBoundary 안의 child에서 Error가 났을 때 특정한 화면을 보여주기 위한 Component이다
+      // ErrorBoundary 영역은 class Component로 만들어야 한다
+      class ErrorBoundary extends React.Component {
+        state = {
+          error: null
+        };
+        static getDerivedStateFromError(error) {
+          return { error };
+        }
+
+        render() {
+          const { error } = this.state;
+          if(error) {
+            return <this.props.fallback error={ error } />;
+          }
+          return this.props.children;
+        }
+      }
+
+      const Child = () => {
+        // Error를 발생 시킴
+        throw new Error("Something is Wrong...");
+        return <p>Child...</p>;
+      }
+
+      const Fallback = ({ error }) => {
+        // alert();
+        return <p>{ error.message }</p>;
+      }
+
+      const App = () => {
+        // input의 value를 state로 관리하고 있는 값을 넣어주어 controlled 한 상태로 만든다
+        return (
+          <>
+            <p>App</p>
+            <ErrorBoundary fallback={Fallback}>
+              <Child />
+            </ErrorBoundary>
+          </>
+        );
+      };
+
+      root.render(<App />);
+    </script>
+  </body>
+</html>
